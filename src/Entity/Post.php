@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\Timestampable;
 use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,8 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
     name: 'unique_slug_for_publish_date',
     columns: ['published_at', 'slug']
 )]
+#[ORM\HasLifecycleCallbacks]
 class Post
 {
+    use Timestampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
