@@ -1,10 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% block title post.title %}
+
+
 {% block body %}
     <article>
         <h1>{{ post.title }}</h1>
 
-        <p>{{ post.body }}</p>
+        <p>
+            Published <time datetime="{{ post.publishedAt | date('Y-m-d H:i') }}">{{ post.publishedAt | date  }}
+            </time> by {{ post.author }}
+        </p>
+
+        <p>{{ post.body | nl2br }}</p>
     </article>
 {% endblock %}
 

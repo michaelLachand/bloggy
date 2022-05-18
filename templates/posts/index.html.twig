@@ -5,8 +5,18 @@
 
     {% for post in posts %}
         <article>
-            <h2><a href="{{ path('app_posts_show', { slug : post.slug }) }}">{{ post.title }}</a></h2>
-            <p>{{ post.body }}</p>
+            <h2>
+                <a href="{{ path('app_posts_show', post.pathParams ) }}">
+                    {{ post.title }}
+                </a>
+            </h2>
+
+            <p>
+                Published <time datetime="{{ post.publishedAt | date('Y-m-d H:i') }}">{{ post.publishedAt | ago  }}
+                </time> by {{ post.author }}
+            </p>
+
+            <p>{{ post.body | u.truncate(50, '...', false) }}</p>
         </article>
     {% endfor %}
 {% endblock %}

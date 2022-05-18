@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,6 +47,34 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllPublishedOrdered(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.publishedAt IS NOT NULL')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findOneByPublishDateAndSlug(int $year, int $month, int $day, string $slug): ?Post
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('YEAR(p.publishedAt) = :year')
+            ->andWhere('MONTH(p.publishedAt) = :month')
+            ->andWhere('DAY(p.publishedAt) = :day')
+            ->andWhere('p.slug = :slug')
+            ->setParameters([
+                'year' => $year,
+                'month' => $month,
+                'day' => $day,
+                'slug' => $slug,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     // /**
     //  * @return Post[] Returns an array of Post objects
     //  */
@@ -73,4 +103,5 @@ class PostRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }
