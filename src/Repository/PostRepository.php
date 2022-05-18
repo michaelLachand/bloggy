@@ -4,10 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,13 +46,12 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAllPublishedOrdered(): array
+    public function getAllPublishedOrderedQuery(): Query
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.publishedAt IS NOT NULL')
             ->orderBy('p.publishedAt', 'DESC')
             ->getQuery()
-            ->getResult()
         ;
     }
 
