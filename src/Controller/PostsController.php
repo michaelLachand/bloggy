@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Repository\PostRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,10 +23,15 @@ class PostsController extends AbstractController
     {
         $query = $this->postRepository->getAllPublishedOrderedQuery();
 
+        $page = $request->query->getInt('page', 1);
+
         $pagination = $paginator->paginate(
-            $query, /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            2 /*limit per page*/
+            $query,
+            $page,
+            Post::NUM_ITEMS_PER_PAGE,
+            [
+                PaginatorInterface::PAGE_OUT_OF_RANGE => PaginatorInterface::PAGE_OUT_OF_RANGE_FIX
+            ]
         );
 
         return $this->render('posts/index.html.twig', compact('pagination'));

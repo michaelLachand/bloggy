@@ -16,6 +16,8 @@ class Post
 {
     use Timestampable;
 
+    public const NUM_ITEMS_PER_PAGE = 2;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
