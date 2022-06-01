@@ -17,19 +17,16 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     public function onBeforeEntityPersistedEvent(BeforeEntityPersistedEvent $event): void
     {
-        $entityInstance = $event->getEntityInstance();
-
-        if ( $entityInstance instanceof User && $entityInstance->plainPassword) {
-            $hashedPassword = $this->userPasswordHasher->hashPassword($entityInstance, $entityInstance->plainPassword);
-
-            $entityInstance->setPassword($hashedPassword);
-        }
+        $this->hashPasswordIfUserAndPlainPasswordProvided($event->getEntityInstance());
     }
 
     public function onBeforeEntityUpdatedEvent(BeforeEntityUpdatedEvent $event): void
     {
-        $entityInstance = $event->getEntityInstance();
+        $this->hashPasswordIfUserAndPlainPasswordProvided($event->getEntityInstance());
+    }
 
+    private function hashPasswordIfUserAndPlainPasswordProvided($entityInstance): void
+    {
         if ( $entityInstance instanceof User && $entityInstance->plainPassword) {
             $hashedPassword = $this->userPasswordHasher->hashPassword($entityInstance, $entityInstance->plainPassword);
 
