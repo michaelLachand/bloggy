@@ -30,8 +30,10 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     {
         $entityInstance = $event->getEntityInstance();
 
-        if ( $entityInstance instanceof User) {
+        if ( $entityInstance instanceof User && $entityInstance->plainPassword) {
+            $hashedPassword = $this->userPasswordHasher->hashPassword($entityInstance, $entityInstance->plainPassword);
 
+            $entityInstance->setPassword($hashedPassword);
         }
     }
 
