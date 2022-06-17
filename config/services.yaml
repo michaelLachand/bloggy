@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.admin_path: '/98R0hQ7WDHPOXtZY7hZv'
+    app.contact_email: hello@bloggy.wip
+    app.name: Bloggy
 
 when@dev:
     parameters:
