@@ -30,7 +30,9 @@
                 <h1><a href="{{ path('app_home') }}">My Blog</a></h1>
             </header>
 
-            <hr class="text-primary">
+            <hr class="text-secondary">
+
+            {{ include('layouts/partials/_flash_messages.html.twig') }}
 
             <main role="main">
                 {% block body %}{% endblock %}
